@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joeven R. Luison Jr. | Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        blockquote {
+            font-style: italic;
+            color: var(--text-muted);
+            border-left: 4px solid var(--accent-color);
+            padding: 0.5rem 1rem;
+            margin: 1.5rem 0;
+            background: rgba(56, 189, 248, 0.05);
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+
+        .links {
+            margin-top: 1.5rem;
+        }
+
+        .links a, .project-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .links a:hover, .project-links a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 3rem 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #fff;
+        }
+
+        /* Skills Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td strong {
+            color: var(--accent-color);
+        }
+
+        /* Projects Styles */
+        .project-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .project-card h3 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .project-card em {
+            display: block;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-style: normal;
+            font-size: 0.95rem;
+        }
+
+        .project-details {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .project-details li {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .project-details li::before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .project-links {
+            margin-top: 1rem;
+        }
+
+        .project-links a {
+            margin-left: 0;
+            margin-right: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-list a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .contact-list a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header layout */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-photo img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+            display: block;
+        }
+
+        /* Responsive Breakpoint */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column-reverse;
+                text-align: center;
+                align-items: center;
+            }
+            h1 { font-size: 2rem; }
+            table, tr, td { display: block; width: 100%; }
+            tr { border-bottom: 1px solid var(--border-color); }
+            td { padding: 0.5rem 1rem; }
+            td:first-child { padding-top: 1rem; }
+            td:last-child { padding-bottom: 1rem; border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <div class="header-text">
+                <h1>Joeven R. Luison Jr.</h1>
+                <div class="subtitle">Frontend Developer | UX Designer</div>
+                <blockquote>
+                    "Turning complex user problems into intuitive, high-performance interfaces that people love to use."
+                </blockquote>
+                <div class="links">
+                    <a href="https://github.com" target="_blank">GitHub</a> | 
+                    <a href="https://linkedin.com" target="_blank">LinkedIn</a> | 
+                    <a href="mailto:joevenluison@gmail.com">Email</a> | 
+                    <a href="#">Resume</a>
+                </div>
+            </div>
+            <div class="header-photo">
+                <img src="ben2.png" alt="Joeven R. Luison Jr.">
+            </div>
+        </header>
+
+        <hr>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Hello! I am a <strong>Frontend Developer and UX Designer</strong> passionate about creating intuitive user experiences and pixel-perfect web interfaces. By combining design thinking with clean code, I focus on blending seamless functionality with modern, responsive aesthetics.</p>
+            <p>When I'm not coding or designing, you can usually find me diving into the latest anime, catching up on manga chapters, or smashing shuttlecocks on the badminton court.</p>
+        </section>
+
+        <hr>
+
+        <section id="skills">
+            <h2>🛠️ Skills & Tools</h2>
+            <table>
+                <tr>
+                    <td><strong>Design & UX</strong></td>
+                    <td>User Research, Wireframing, Prototyping, Figma, User Flows</td>
+                </tr>
+                <tr>
+                    <td><strong>Frontend Development</strong></td>
+                    <td>HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS</td>
+                </tr>
+                <tr>
+                    <td><strong>Tools & Deploys</strong></td>
+                    <td>Git, GitHub, VS Code, Vercel / Netlify</td>
+                </tr>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="projects">
+            <h2>💼 Featured Projects</h2>
+
+            <div class="project-card">
+                <h3>🏫 Campus Connect</h3>
+                <em>A centralized web platform helping students reconnect with their lost belongings on campus.</em>
+                <ul class="project-details">
+                    <li><strong>The Challenge:</strong> Campuses often lack a reliable, streamlined way for students to report lost items or return found property, leading to cluttered physical lost-and-found desks and lost valuables.</li>
+                    <li><strong>The Solution:</strong> Designed an intuitive, real-time matching dashboard where users can quickly upload photos and descriptions of found items, filter by location, and securely message owners—built with a highly responsive frontend for mobile-first students.</li>
+                </ul>
+                <div class="project-links">
+                    <a href="#" target="_blank">Live Demo</a>
+                    <a href="#" target="_blank">Source Code</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>👟 ShoeEase</h3>
+                <em>An elegant e-commerce experience built on the philosophy that great footwear is the foundation of confidence and comfort.</em>
+                <ul class="project-details">
+                    <li><strong>The Challenge:</strong> Many online shoe retailers have cluttered interfaces that complicate the filtering, sizing, and checkout processes, creating friction for buyers looking for affordable, quality shoes.</li>
+                    <li><strong>The Solution:</strong> Designed a clean, minimal user experience with smooth product transitions, interactive size-picking elements, and a lightning-fast checkout flow to deliver on the brand's mission of stylish, durable, and accessible footwear.</li>
+                </ul>
+                <div class="project-links">
+                    <a href="#" target="_blank">Live Demo</a>
+                    <a href="#" target="_blank">Source Code</a>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="contact">
+            <h2>📬 Get In Touch</h2>
+            <p>I'm always open to discussing new projects, design systems, or creative web opportunities.</p>
+            <ul class="contact-list">
+                <li><strong>Email:</strong> <a href="mailto:joevenluison@gmail.com">joevenluison@gmail.com</a></li>
+                <li><strong>Location:</strong> Philippines</li>
+            </ul>
+        </section>
+
+    </div>
+
+</body>
+</html>

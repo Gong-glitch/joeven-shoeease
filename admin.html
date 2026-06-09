@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - ShoeEase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+  <nav class="bg-slate-850 border-b border-slate-800 px-8 py-4 flex justify-between items-center shadow-lg">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-black italic tracking-tighter text-white">SHOE<span class="text-orange-500">EASE</span> <span class="text-xs uppercase tracking-widest text-slate-400 font-normal not-italic ml-2">Admin Portal</span></h1>
+    </div>
+    <a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition shadow">
+      ← Back to Storefront
+    </a>
+  </nav>
+
+  <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <div class="lg:col-span-1 bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl h-fit">
+      <h2 id="formTitle" class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-orange-500">➕</span> Add New Sneaker
+      </h2>
+      
+      <form id="productForm" class="space-y-4">
+        <input type="hidden" id="productId">
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Sneaker Model Name</label>
+          <input type="text" id="prodName" required placeholder="e.g. Air Jordan 1 Retro" 
+                 class="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:border-orange-500 outline-none transition text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Price ($ USD)</label>
+          <input type="number" step="0.01" id="prodPrice" required placeholder="0.00" 
+                 class="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:border-orange-500 outline-none transition text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Product Image URL</label>
+          <input type="url" id="prodImg" required placeholder="pictures/filename.jpg or https://..." 
+                 class="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:border-orange-500 outline-none transition text-sm">
+          <p class="text-[10px] text-slate-500 mt-1">You can reference localized strings (e.g., pictures/images.jpg) or web URLs.</p>
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button type="submit" id="submitBtn" class="flex-grow bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-lg transition shadow-lg active:scale-95 text-sm">
+            Save Product
+          </button>
+          <button type="button" id="cancelEditBtn" class="hidden bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold px-4 py-2.5 rounded-lg transition text-sm">
+            Cancel
+          </button>
+        </div>
+      </form>
+      <p id="formStatus" class="text-xs text-center mt-3 font-semibold min-h-[1.25rem]"></p>
+    </div>
+
+    <div class="lg:col-span-2 bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <span class="text-orange-500">📦</span> Live Database Inventory
+      </h2>
+      
+      <div id="adminInventoryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <p class="text-slate-400 text-sm italic col-span-full py-8 text-center">Connecting to cloud storage channels...</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Auth guard
+    if (!localStorage.getItem('shoeease_session')) {
+      alert("🔒 Access Denied: You must be logged in to access the Admin Portal.");
+      window.location.href = "login.html";
+    }
+
+    function getProducts() {
+      return JSON.parse(localStorage.getItem('shoeease_products') || '[]');
+    }
+
+    function saveProducts(products) {
+      localStorage.setItem('shoeease_products', JSON.stringify(products));
+    }
+
+    const productForm = document.getElementById('productForm');
+    const productIdInput = document.getElementById('productId');
+    const prodNameInput = document.getElementById('prodName');
+    const prodPriceInput = document.getElementById('prodPrice');
+    const prodImgInput = document.getElementById('prodImg');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formTitle = document.getElementById('formTitle');
+    const formStatus = document.getElementById('formStatus');
+    const adminInventoryGrid = document.getElementById('adminInventoryGrid');
+
+    function fetchInventory() {
+      const products = getProducts();
+      adminInventoryGrid.innerHTML = '';
+
+      if (products.length === 0) {
+        adminInventoryGrid.innerHTML = '<p class="text-slate-500 text-sm py-8 text-center col-span-full">No products found in the database. Use the form to add some!</p>';
+        return;
+      }
+
+      products.forEach((product) => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-700 rounded-xl p-4 flex items-center justify-between gap-4";
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${product.imgSrc}" alt="${product.name}" class="w-16 h-16 object-cover rounded-lg border border-slate-700 bg-slate-800">
+            <div>
+              <h4 class="font-bold text-white text-sm line-clamp-1">${product.name}</h4>
+              <p class="text-orange-500 text-xs font-semibold">$${parseFloat(product.price).toFixed(2)}</p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 min-w-[70px]">
+            <button class="edit-btn bg-slate-700 hover:bg-slate-600 text-white text-xs py-1.5 px-2.5 rounded font-bold transition"
+                    data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-img="${product.imgSrc}">
+              Edit
+            </button>
+            <button class="delete-btn bg-red-950/40 hover:bg-red-900 border border-red-900/60 text-red-400 text-xs py-1.5 px-2.5 rounded font-bold transition"
+                    data-id="${product.id}" data-name="${product.name}">
+              Delete
+            </button>
+          </div>
+        `;
+        adminInventoryGrid.appendChild(card);
+      });
+
+      attachActionEventListeners();
+    }
+
+    function attachActionEventListeners() {
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const ds = e.target.dataset;
+          productIdInput.value = ds.id;
+          prodNameInput.value = ds.name;
+          prodPriceInput.value = ds.price;
+          prodImgInput.value = ds.img;
+          formTitle.innerHTML = `<span class="text-orange-500">📝</span> Edit Product Details`;
+          submitBtn.innerText = "Update Product Info";
+          cancelEditBtn.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          const name = e.target.dataset.name;
+          if (confirm(`⚠️ CRITICAL ACTION:\nAre you sure you want to permanently remove "${name}" from the store catalog?`)) {
+            const products = getProducts().filter(p => p.id !== id);
+            saveProducts(products);
+            showStatus("🎉 Product deleted successfully!", "text-green-400");
+            fetchInventory();
+          }
+        });
+      });
+    }
+
+    productForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = prodNameInput.value.trim();
+      const price = parseFloat(prodPriceInput.value);
+      const imgSrc = prodImgInput.value.trim();
+      const id = productIdInput.value;
+
+      if (!name || isNaN(price) || !imgSrc) {
+        showStatus("❌ Fill all fields before submitting.", "text-red-400");
+        return;
+      }
+
+      const products = getProducts();
+      if (id) {
+        const idx = products.findIndex(p => p.id === id);
+        if (idx !== -1) products[idx] = { id, name, price, imgSrc };
+        showStatus("🎉 Product updated successfully!", "text-green-400");
+      } else {
+        products.push({ id: Date.now().toString(), name, price, imgSrc });
+        showStatus("🎉 New product added to inventory!", "text-green-400");
+      }
+
+      saveProducts(products);
+      resetForm();
+      fetchInventory();
+    });
+
+    function resetForm() {
+      productForm.reset();
+      productIdInput.value = "";
+      formTitle.innerHTML = `<span class="text-orange-500">➕</span> Add New Sneaker`;
+      submitBtn.innerText = "Save Product";
+      cancelEditBtn.classList.add('hidden');
+    }
+
+    cancelEditBtn.addEventListener('click', resetForm);
+
+    function showStatus(msg, colorClass) {
+      formStatus.innerText = msg;
+      formStatus.className = `text-xs text-center mt-3 font-semibold min-h-[1.25rem] ${colorClass}`;
+      setTimeout(() => { formStatus.innerText = ""; }, 4000);
+    }
+
+    fetchInventory();
+  </script>
+</body>
+</html>

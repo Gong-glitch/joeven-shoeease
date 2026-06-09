@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif; /* Clean, modern font */
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Matches your main site background */
+    background: #344443; 
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.login-box {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+/* Style for the Logo inside the login box */
+.login-box img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #f97316; /* Orange border for the logo */
+}
+
+.login-box h2 {
+    font-size: 24px;
+    font-weight: 900;
+    font-style: italic;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.login-box h2 span {
+    color: #f97316; /* The "EASE" in orange */
+}
+
+.login-box p.subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Orange focus state to match index page buttons */
+.input-group input:focus {
+    border-color: #f97316;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+.password-box {
+    position: relative;
+}
+
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+}
+
+.options {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #444;
+}
+
+.options input {
+    margin-right: 8px;
+    accent-color: #f97316; /* Orange checkbox */
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: #f97316; /* Main orange action color */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+button:hover {
+    background: #ea580c; /* Darker orange */
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#errorMsg {
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.register {
+    font-size: 14px;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register a {
+    color: #f97316;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media(max-width:480px){
+    .login-box{
+        padding: 30px 20px;
+    }
+}
