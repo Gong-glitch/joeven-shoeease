@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ShoeEase</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const session = localStorage.getItem('shoeease_session');
+      const authLinks = document.getElementById('authLinks');
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (session) {
+        if (authLinks) authLinks.setAttribute('style', 'display: none !important');
+        if (logoutBtn) logoutBtn.setAttribute('style', 'display: flex !important');
+      } else {
+        if (authLinks) authLinks.setAttribute('style', 'display: flex !important');
+        if (logoutBtn) logoutBtn.setAttribute('style', 'display: none !important');
+      }
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('shoeease_session');
+          window.location.reload();
+        });
+      }
+    });
+  </script>
+</head>
+
+<body>
+
+<div id="cartSidebar" class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[2000] flex flex-col">
+    <div class="p-4 border-b flex justify-between items-center bg-slate-800 text-white">
+        <h2 class="text-xl font-bold">Your Cart</h2>
+        <button id="closeCart" class="text-2xl">&times;</button>
+    </div>
+    <div id="cartItemsList" class="flex-grow overflow-y-auto p-4 space-y-4 text-gray-800">
+        <p id="emptyMessage" class="text-center text-gray-500 mt-10">Your cart is empty.</p>
+    </div>
+    <div class="p-4 border-t bg-gray-50">
+        <div class="flex justify-between font-bold text-lg mb-4">
+            <span>Total:</span>
+            <span>$<span id="cartTotal">0.00</span></span>
+        </div>
+        <button class="w-full bg-orange-500 text-white py-3 rounded-lg font-bold hover:bg-orange-600 transition">
+            Checkout
+        </button>
+    </div>
+</div>
+<div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1999]"></div>
+
+<header class="fixed top-0 left-0 w-full z-[1000] shadow-md">
+  <nav class="bg-[#1a1a1a] text-gray-400 py-2 px-6 flex justify-between items-center text-[10px] uppercase tracking-widest border-b border-gray-800 relative z-[1010]">
+    <button id="menuBtn" class="md:hidden text-white text-2xl p-2" style="cursor: pointer !important; touch-action: manipulation;">☰</button>
+
+    <ul class="hidden md:flex gap-8">
+      <li><a href="#home" class="hover:text-white transition">Home</a></li>
+      <li><a href="#products" class="hover:text-white transition">Products</a></li>
+      <li><a href="#about" class="hover:text-white transition">About</a></li>
+      <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+      <li><a href="portfolio.html" target="_blank" class="hover:text-white transition">Portfolio</a></li>
+    </ul>
+    
+    <div class="flex items-center gap-4">
+      <div id="authLinks" class="flex flex-nowrap items-center gap-1 sm:gap-4">
+        <a href="login.html" class="text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-md text-[9px] sm:text-sm font-bold transition border border-gray-600 hover:bg-gray-800">Log In</a>
+        <a href="signup.html" class="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-md text-[9px] sm:text-sm font-bold transition shadow-lg">Sign Up</a>
+      </div>
+
+      <button id="logoutBtn" style="display: none;" class="flex items-center gap-1 sm:gap-2 bg-white hover:bg-red-50 text-red-500 px-2 py-1.5 sm:px-3 sm:py-2 rounded-md transition border border-slate-200 shadow-sm">
+        <img src="pictures/logout.png" alt="Logout" class="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover">
+        <span class="font-bold text-[9px] sm:text-xs uppercase tracking-tight hidden xs:block">Logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobileDrawer" class="fixed top-0 left-0 h-full w-64 bg-[#1a1a1a] z-[3000] transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+    <div class="p-6 flex justify-between items-center border-b border-gray-800">
+      <h2 class="text-white font-black italic">SHOE<span class="text-#f5dba4-500">EASE</span></h2>
+      <button id="closeDrawer" class="text-white text-3xl">&times;</button>
+    </div>
+    <ul class="flex flex-col p-6 gap-6 text-gray-400 uppercase tracking-widest text-[10px]">
+      <li><a href="#home" class="drawer-link hover:text-white">Home</a></li>
+      <li><a href="#products" class="drawer-link hover:text-white">Products</a></li>
+      <li><a href="#about" class="drawer-link hover:text-white">About</a></li>
+      <li><a href="#contact" class="drawer-link hover:text-white">Contact</a></li>
+      <li><a href="portfolio.html" target="_blank" class="drawer-link hover:text-white">Portfolio</a></li>
+    </ul>
+  </div>
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/60 hidden z-[2999]"></div>
+
+  <nav class="bg-white py-4 px-8 flex justify-between items-center relative z-[1005]">
+    <div class="logo flex items-center gap-3 cursor-pointer" onclick="window.location.href='#home'">
+      <img src="pictures/1733572202531.jpg" alt="ShoeEase" class="w-12 h-12 rounded-full shadow-sm">
+      <h1 class="text-2xl font-black text-slate-900 italic tracking-tighter">SHOE<span class="text-orange-500">EASE</span></h1>
+    </div>
+
+    <div class="flex items-center gap-8">
+      <div class="relative group flex items-center">
+        <input type="text" id="searchInput" placeholder="Search sneakers..." 
+               class="bg-gray-100 border border-transparent focus:border-orange-500 focus:bg-white rounded-md py-2 px-10 text-sm hidden sm:block w-48 lg:w-80 outline-none transition-all">
+        <span class="text-xl sm:text-gray-400 sm:absolute sm:right-3 cursor-pointer">🔍</span>
+      </div>
+
+      <div id="cartTrigger" class="flex items-center gap-3 cursor-pointer group">
+        <div class="relative">
+          <span class="text-2xl group-hover:scale-110 transition-transform inline-block">🛒</span>
+          <span id="cartCountDisplay" class="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
+        </div>
+        <div class="hidden lg:block leading-none">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">Total</p>
+          <p class="text-sm font-black text-slate-800">$<span id="cartTotalNav">0.00</span></p>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="mt-32">
+  <section id="home">
+    <section class="hero text-center py-10">
+      <h1 class="text-4xl font-bold">Welcome to ShoeEase</h1>
+      <p>Your one-stop shop for your feet!</p>
+    </section>
+
+    <section class="carousel-container relative overflow-hidden max-w-4xl mx-auto rounded-xl">
+      <div class="carousel flex transition-transform duration-500">
+        <div class="carousel-slide min-w-full"><img src="pictures/ph-11134207-7r98o-lkq2hmpal6ipd4.webp" alt="Slide 1" class="w-full"></div>
+        <div class="carousel-slide min-w-full"><img src="pictures/21101a2aa22999477cf74ddde67d23c4.jpg" alt="Slide 2" class="w-full"></div>
+        <div class="carousel-slide min-w-full"><img src="pictures/11010972_1.jpg" alt="Slide 3" class="w-full"></div>
+        <div class="carousel-slide min-w-full"><img src="pictures/m108014g_nb_02_i.webp" alt="Slide 4" class="w-full"></div>
+        <div class="carousel-slide min-w-full"><img src="pictures/ph-11134201-23020-eens29h0zmnvbd.webp" alt="Slide 5" class="w-full"></div>
+      </div>
+      <div class="carousel-controls absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+        <button id="prev" class="bg-black/50 text-white p-2 rounded-full pointer-events-auto">❮</button>
+        <button id="next" class="bg-black/50 text-white p-2 rounded-full pointer-events-auto">❯</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="products" class="products p-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="product border p-4 rounded-xl text-center">
+      <img src="pictures/images.jpg" alt="Old Skool Brown" class="mx-auto h-48 object-cover">
+      <h3 class="font-bold mt-2">Old Skool Brown</h3>
+      <p class="text-orange-500 font-bold">$24.99</p>
+      <button class="add-to-cart bg-slate-800 text-white px-4 py-2 mt-2 rounded-lg">Add to Cart</button>
+    </div>
+    <div class="product border p-4 rounded-xl text-center">
+      <img src="pictures/m108014g_nb_02_i.webp" alt="New Balance" class="mx-auto h-48 object-cover">
+      <h3 class="font-bold mt-2">New Balance</h3>
+      <p class="text-orange-500 font-bold">$39.99</p>
+      <button class="add-to-cart bg-slate-800 text-white px-4 py-2 mt-2 rounded-lg">Add to Cart</button>
+    </div>
+    <div class="product border p-4 rounded-xl text-center">
+      <img src="pictures/ph-11134201-23020-eens29h0zmnvbd.webp" alt="Nike Air" class="mx-auto h-48 object-cover">
+      <h3 class="font-bold mt-2">Nike Air</h3>
+      <p class="text-orange-500 font-bold">$49.99</p>
+      <button class="add-to-cart bg-slate-800 text-white px-4 py-2 mt-2 rounded-lg">Add to Cart</button>
+    </div>
+    <div class="product border p-4 rounded-xl text-center">
+      <img src="pictures/ph-11134207-7r98o-lkq2hmpal6ipd4.webp" alt="Nike Air Black" class="mx-auto h-48 object-cover">
+      <h3 class="font-bold mt-2">Nike Air Black</h3>
+      <p class="text-orange-500 font-bold">$49.99</p>
+      <button class="add-to-cart bg-slate-800 text-white px-4 py-2 mt-2 rounded-lg">Add to Cart</button>
+    </div>
+  </section>
+
+  <section id="about" class="about p-10">
+    <h1 class="text-2xl font-bold">About ShoeEase</h1>
+    <p>At ShoeEase, we believe that great footwear is the foundation of confidence and comfort. Founded in 2024, our mission is to provide stylish, durable, and affordable shoes for everyone.</p>
+    <h2 class="font-bold mt-4">Why Choose Us?</h2>
+    <ul class="list-disc ml-5">
+      <li>Wide variety of styles and sizes</li>
+      <li>High-quality materials</li>
+      <li>Fast and reliable shipping</li>
+      <li>Dedicated customer support</li>
+    </ul>
+  </section>
+
+  <section id="contact" class="contact-page p-10 flex flex-col items-center justify-center text-center">
+    <div class="max-w-2xl w-full">
+      <div class="contact-info">
+        <h1 class="text-2xl font-bold">Contact Us</h1>
+        <p>We’d love to hear from you!</p>
+        <ul class="mb-6">
+          <li>Email: joevenluison@gmail.com</li>
+          <li>Phone: 09948241688</li>
+        </ul>
+      </div>
+      <div class="contact-form-section">
+        <h2 class="font-bold mb-2">Send Us a Message</h2>
+        <form id="contactForm" class="flex flex-col gap-4">
+          <input type="text" class="border p-2 rounded" placeholder="Your Name" required>
+          <input type="email" class="border p-2 rounded" placeholder="Your Email" required>
+          <textarea rows="5" class="border p-2 rounded" placeholder="Your Message" required></textarea>
+          <button type="submit" class="bg-slate-800 text-white py-2 rounded-lg">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-container p-10 flex flex-col md:flex-row justify-between">
+    <div class="footer-section">
+      <h3 class="font-bold">Customer Service</h3>
+      <p>Email: joevenluison@gmail.com</p>
+      <p>Phone: 09948241688</p>
+    </div>
+    <div class="footer-section">
+      <h3 class="font-bold">Follow Us</h3>
+      <div class="social-links flex gap-4 mt-2">
+        <a href="https://web.facebook.com/joeven.luison.56/"><img src="pictures/FB2.png" alt="FB" class="w-8"></a>
+        <a href="#"><img src="pictures/1.png" alt="IG" class="w-8"></a>
+        <a href="#"><img src="pictures/2.png" alt="TW" class="w-8"></a>
+      </div>
+    </div>
+  </div>
+  <p class="footer-note text-center py-4">&copy; 2026 ShoeEase. All Rights Reserved.</p>
+</footer>
+
+<script type="module" src="scripts.js"></script>
+
+</body>
+</html>
