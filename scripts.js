@@ -1,3 +1,11 @@
+// Default products shown when no admin products exist yet
+const DEFAULT_PRODUCTS = [
+    { id: 'default-1', name: 'Old Skool Brown', price: 24.99, imgSrc: 'pictures/images.jpg' },
+    { id: 'default-2', name: 'New Balance', price: 39.99, imgSrc: 'pictures/m108014g_nb_02_i.webp' },
+    { id: 'default-3', name: 'Nike Air', price: 49.99, imgSrc: 'pictures/ph-11134201-23020-eens29h0zmnvbd.webp' },
+    { id: 'default-4', name: 'Nike Air Black', price: 49.99, imgSrc: 'pictures/ph-11134207-7r98o-lkq2hmpal6ipd4.webp' }
+];
+
 // Global Array to hold products
 let dbProductsCache = [];
 
@@ -179,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadDatabaseStorefront() {
         if (!productsContainer) return;
-        dbProductsCache = JSON.parse(localStorage.getItem('shoeease_products') || '[]');
+        const stored = JSON.parse(localStorage.getItem('shoeease_products') || '[]');
+        dbProductsCache = stored.length > 0 ? stored : DEFAULT_PRODUCTS;
         renderProductGrid(dbProductsCache);
     }
 
